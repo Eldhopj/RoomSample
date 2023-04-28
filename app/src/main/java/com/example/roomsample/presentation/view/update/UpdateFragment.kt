@@ -13,9 +13,12 @@ import com.eldhopj.android_extensions.toast
 import com.eldhopj.android_extensions.value
 import com.example.roomsample.R
 import com.example.roomsample.databinding.FragmentUpdateBinding
+import com.example.roomsample.domain.model.Address
+import com.example.roomsample.domain.model.ContactDetails
 import com.example.roomsample.domain.model.User
 import com.example.roomsample.utils.bases.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.Date
 
 @AndroidEntryPoint
 class UpdateFragment : BaseFragment<FragmentUpdateBinding>(FragmentUpdateBinding::inflate) {
@@ -33,25 +36,30 @@ class UpdateFragment : BaseFragment<FragmentUpdateBinding>(FragmentUpdateBinding
 
     private fun setValues(binding: FragmentUpdateBinding) {
         binding.apply {
-            updateFirstNameEt.setText(args.currentUser.firstName)
-            updateLastNameEt.setText(args.currentUser.lastName)
-            updateAgeEt.setText(args.currentUser.age.toString())
+            firstNameEt.setText(args.currentUser.firstName)
+            lastName.setText(args.currentUser.lastName)
+            age.setText(args.currentUser.age.toString())
         }
     }
 
     private fun updateItem() {
         val user = binding?.run {
-            val firstName = updateFirstNameEt.value
-            val lastName = updateLastNameEt.value
-            val age = updateAgeEt.value.toInt()
+            val firstName = firstNameEt.value
+            val lastName = lastName.value
+            val age = age.value.toInt()
+            val phoneNumber = phoneNumber.value
+            val email = email.value
+            val residentAddress = residentAddress.value
+            val streetAddress = streetAddress.value
+            val address = Address(residentAddress, streetAddress)
+            val contactDetails = ContactDetails(Date(12324309), address, email, phoneNumber)
             User(
                 firstName,
                 lastName,
                 age,
-                args.currentUser.id
+                contactDetails
             )
         }
-
         if (user != null) {
             viewModel.updateUser(user)
         }

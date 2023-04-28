@@ -5,10 +5,13 @@ import androidx.navigation.fragment.findNavController
 import com.eldhopj.android_extensions.setOnSafeClickListener
 import com.eldhopj.android_extensions.toast
 import com.eldhopj.android_extensions.value
-import com.example.roomsample.utils.bases.BaseFragment
 import com.example.roomsample.databinding.FragmentAddBinding
+import com.example.roomsample.domain.model.Address
+import com.example.roomsample.domain.model.ContactDetails
 import com.example.roomsample.domain.model.User
+import com.example.roomsample.utils.bases.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.Date
 
 @AndroidEntryPoint
 class AddFragment : BaseFragment<FragmentAddBinding>(FragmentAddBinding::inflate) {
@@ -23,13 +26,20 @@ class AddFragment : BaseFragment<FragmentAddBinding>(FragmentAddBinding::inflate
 
     private fun insertDataToDatabase() {
         val user = binding?.run {
-            val firstName = addFirstNameEt.value
-            val lastName = addLastNameEt.value
-            val age = addAgeEt.value.toInt()
+            val firstName = firstNameEt.value
+            val lastName = lastName.value
+            val age = age.value.toInt()
+            val phoneNumber = phoneNumber.value
+            val email = email.value
+            val residentAddress = residentAddress.value
+            val streetAddress = streetAddress.value
+            val address = Address(residentAddress, streetAddress)
+            val contactDetails = ContactDetails(Date(12), address, email, phoneNumber)
             User(
                 firstName,
                 lastName,
-                age
+                age,
+                contactDetails
             )
         }
         if (user != null) {
