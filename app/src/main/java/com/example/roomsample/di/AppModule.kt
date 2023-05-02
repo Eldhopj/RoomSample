@@ -26,7 +26,9 @@ object AppModule {
             context,
             AppDatabase::class.java,
             context.getString(R.string.app_name)
-        ).build()
+        )
+            .fallbackToDestructiveMigration()
+            .build()
     }
 
 }
